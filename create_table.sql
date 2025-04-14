@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS oac_tw_table (
     loc_purp_desc VARCHAR(2),
     loc_qti VARCHAR(3),
     flow_ind VARCHAR(1),
-    dc INT,
+    dc Float,
     opc INT,
     tsq INT,
     oac INT,
