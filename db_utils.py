@@ -5,17 +5,16 @@ from pathlib import Path
 
 CREATE_TABLE_FILE = "create_table.sql"
 INSERT_TABLE_QUERY = "INSERT INTO oac_tw_table ({}) VALUES ({})"
-PARAMS = {
+
+def get_db_connection():
+
+    PARAMS = {
     'dbname': os.environ['DB'],
     'user': os.environ["PG_USER"],
     'password': os.environ["PG_PASSWORD"],
     'host': 'localhost',
     'port': '5432'
-}
-
-
-
-def get_db_connection():
+    }
     conn = psycopg2.connect(**PARAMS)
     return conn
     

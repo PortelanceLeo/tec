@@ -1,4 +1,7 @@
+from datetime import datetime,timedelta
+import multiprocessing
 import pandas as pd
+from data_utils import CYCLE_COUNT, download_csv, get_csv_url
 from db_utils import get_db_connection, create_table, insert_into_table
 
 RANDOM_DATA = {
@@ -22,13 +25,31 @@ RANDOM_DATA = {
 }
 
 if __name__ == "__main__":
-    df = pd.DataFrame(RANDOM_DATA)
-    with get_db_connection() as conn:
-        create_table(conn)
-        insert_into_table(conn, df)
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM oac_tw_table")
-            rows = cursor.fetchall()
-    for row in rows:
-        print(row)
+    # df = pd.DataFrame(RANDOM_DATA)
+    # with get_db_connection() as conn:
+    #     create_table(conn)
+    #     insert_into_table(conn, df)
+    #     with conn.cursor() as cursor:
+    #         cursor.execute("SELECT * FROM oac_tw_table")
+    #         rows = cursor.fetchall()
+    # for row in rows:
+    #     print(row)
+    
+    def process(date,cycle):
+        url = get_csv_url(date,cycle)
+        filename = f"tw_oac_{date.strftime('%Y%m%d')}_{cycle}.csv"
+        file = download_csv(url,filename)
+        return file
+    
+    day_count = 3
+    end_date = datetime.now().date()
+    start_date = end_date - timedelta(days=day_count-1)
+    dates = pd.date_range(start_date,end_date)
+    targets = [(d,c) for d in dates for c in range(CYCLE_COUNT)]
+    with multiprocessing.Pool(processes=4) as pool:
+        results = pool.starmap(process,targets)
+        
+        
+
+
 
