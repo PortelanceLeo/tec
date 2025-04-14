@@ -35,7 +35,9 @@ def insert_into_table(conn, df):
         columns = ', '.join(df.columns)
         placeholders = ', '.join(['%s'] * len(df.columns))
         query = INSERT_TABLE_QUERY.format(columns, placeholders)
-        cursor.executemany(query, [tuple(row) for row in df.values])
+        rows = [tuple(row) for row in df.values]
+        cursor.executemany(query, rows)
+        return len(rows)
     conn.commit()
     
         

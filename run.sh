@@ -10,10 +10,11 @@ pip install -r requirements.txt
 
 
 sudo systemctl start postgresql
-sudo -u postgres psql -c "CREATE USER IF NOT EXISTS $PG_USER WITH PASSWORD '$PG_PASSWORD';"
-sudo -u postgres psql -c "ALTER USER $PG_USER WITH SUPERUSER;"
-sudo -u postgres psql -c "CREATE DATABASE IF NOT EXISTS $DB OWNER $PG_USER;"
+sudo -u postgres psql --version
+# sudo -u postgres psql -c "CREATE USER $PG_USER WITH PASSWORD '$PG_PASSWORD';"
+# sudo -u postgres psql -c "ALTER USER $PG_USER WITH SUPERUSER;"
+# sudo -u postgres psql -c "CREATE DATABASE $DB OWNER $PG_USER;"
 
-python playground.py
+# python playground.py
 sudo systemctl stop postgresql
-deactivate
+# deactivate

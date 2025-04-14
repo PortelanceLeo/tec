@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS oac_tw_table (
+CREATE TABLE oac_tw_table (
     loc INT,
     loc_zn VARCHAR(255),
     loc_name VARCHAR(255),

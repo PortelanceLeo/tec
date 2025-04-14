@@ -81,6 +81,10 @@ if __name__ == "__main__":
         invalid_row_mask = ~(invalid_boolean_row_mask & invalid_string_row_mask)
         df = df[invalid_row_mask]
         return df if not df.empty else None
+    def load_data_into_db(df):
+        with get_db_connection() as conn:
+            count = insert_into_table(conn, df)
+        return count
 
     def process_data(date,cycle):
         print(f"Downloading data for {date.strftime('%m/%d/%Y')} cycle {cycle}")
@@ -90,20 +94,33 @@ if __name__ == "__main__":
         if df is not None:
             df['gas_day'] = date
             df['cycle'] = cycle
-            return df
+            count = load_data_into_db(df)
+            print(f"Loaded {count} rows into the db for {date.strftime('%m/%d/%Y')} cycle {cycle}")
         else:
             print(f"No data or invalid data for {date.strftime('%m/%d/%Y')} cycle {cycle}")
             return None
+        
+    
 
     MAX_PROCESS = 4
     day_count = 3
     end_date = datetime.now().date()
     start_date = end_date - timedelta(days=day_count-1)
     dates = pd.date_range(start_date,end_date)
-    targets = [(d,c) for d in dates for c in CYCLES]
+    targets = [(d,c) for d in dates for c in CYCLES][:4]
+    
+    with get_db_connection() as conn:
+        create_table(conn)
+
     with multiprocessing.Pool(processes=MAX_PROCESS) as pool:
         results = pool.starmap(process_data,targets)
-    
+
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+                cursor.execute("SELECT * FROM oac_tw_table")
+                rows = cursor.fetchall()
+        for row in rows:
+            print(row)
         
         
 
