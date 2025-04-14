@@ -25,7 +25,6 @@ https://twtransfer.energytransfer.com/ipost/TW/capacity/operationally-available
 An example url that can be used to download the CSV over HTTP:
 https://twtransfer.energytransfer.com/ipost/capacity/operationally-available?f=csv&extension=csv&asset=TW&gasDay=01%2F18%2F2024&cycle=3&searchType=NOM&searchString=&locType=ALL&locZone=ALL
 
-
 ## Command to run stuff
 PG_USER=leo PG_PASSWORD=verysafe42 DB=test_db ./run.sh
 
