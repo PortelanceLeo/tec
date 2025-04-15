@@ -80,7 +80,7 @@ def process_data(date, cycle):
     print(f"Downloading data for {date.strftime('%m/%d/%Y')} cycle {cycle}")
     file = download_data(date, cycle)
     print(f"Cleaning data for {date.strftime('%m/%d/%Y')} cycle {cycle}")
-    df = clean_data(file, date, cycle)
+    df = clean_data(file)
     if df is not None:
         df["gas_day"] = date
         df["cycle"] = cycle
